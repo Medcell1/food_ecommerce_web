@@ -1,0 +1,79 @@
+.SignUpWholePage {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 100vh;
+  }
+  .signUpLeftContainer {
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  
+  }
+  
+  .signUpRightContainer {
+    flex: 1;
+    background-image: url('../../assets/signbackground.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .signUpRightContainer h1{
+    color: white;
+  }
+  .signUpRightContainer h3{
+    color: white;
+  }
+  .signup-container{
+    font-weight: bold;
+    background-color: #BDBE3E;
+    width: 9vw;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-left: 40px;  
+    position: relative;
+    bottom: 10vh;
+    cursor: pointer;
+  }
+
+  .navigate-signup-container {
+    font-weight: bold;
+    background-color: white;
+    text-align: center;
+    width: 9vw;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-top: 15vh;
+  }
+  h1{  
+    color: #c1c242;
+  }
+  .signupsocialIcons{
+    display: flex;
+    flex-direction: row; 
+    padding-bottom: 20px;
+  }
+  .signupsocialIcons img {
+    margin: 0 5px;
+  }
+  .error-container{
+    background-color: #F8D0C8;
+    width: 30vw;
+    height: 10vh;
+    margin-left: 5vw;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }

@@ -1,0 +1,81 @@
+.wholePage {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+  }
+  
+  .right {
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .left {
+    flex: 1;
+    background-image: url('../../assets/signbackground.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .right h1 {
+    color: #c1c242;
+    margin-left: 40px;
+  }
+  
+  .socialIcons {
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
+  }
+  .forgotpasswordtext{
+    text-decoration: underline;
+  }
+  
+  .socialIcons img {
+    margin: 0 5px;
+  }
+  
+  .signin-container {
+    width: 9vw;
+    height: 35px;
+    background-color: #BDBE3E;
+    margin-left: 6vw;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .signin-container div {
+    text-align: center;
+  }
+  
+  .left h1 {
+    color: white;
+  }
+  
+  .left h3 {
+    color: white;
+  }
+  .signup-container{
+    background-color: white;
+    text-align: center;
+    width: 9vw;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-top: 15vh;
+  }
+  :link {
+    text-decoration: none;
+  }

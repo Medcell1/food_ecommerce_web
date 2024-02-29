@@ -1,0 +1,61 @@
+.custom-textfield {
+    position: relative;
+    margin-bottom: 25px;
+  }
+  
+  .prefix-icon,
+  .suffix-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #ccc;
+    cursor: pointer;
+  }
+  
+  .prefix-icon {
+    left: 10px;
+  }
+  
+  .suffix-icon {
+    right: 10px;
+  }
+  
+  .suffix-icon.error {
+    color: #ff0000; /* Set color for the error icon */
+  }
+  
+  .input-container {
+    position: relative;
+  }
+  
+  input {
+    width: calc(100% - 40px); /* Adjust the width to accommodate the prefix and suffix icons */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    padding-left: 40px; /* Adjust the left padding to create space for the icons */
+  }
+  
+  input::placeholder {
+    color: #ccc;
+    font-size: 12px;
+  }
+  
+  .validation-message {
+    color: #ff0000; /* Set the color for the error message */
+    font-size: 12px;
+    position: absolute;
+    bottom: -18px; /* Adjust the position to move the error message below the input */
+  }
+  
+  .warning-icon {
+    font-size: 16px;
+    color: #ff0000; /* Set the color for the warning icon */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
