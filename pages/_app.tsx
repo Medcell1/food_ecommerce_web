@@ -5,14 +5,19 @@ import '@/components/customtextfield.css';
 import '@/pages/signup/index.css';
 import '@/pages/login/index.css';
 import '@/components/sidebar.css';
+import '@/components/navbar.css';
+
+
+
 
 import { UserContextProvider } from '@/context/usercontext';
 import { SessionProvider } from 'next-auth/react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SessionProvider>
+    <SessionProvider session={pageProps.session}>
     <UserContextProvider>
+      
       <Component {...pageProps} />
     </UserContextProvider>
     </SessionProvider>

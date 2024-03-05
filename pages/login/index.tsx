@@ -8,10 +8,9 @@ import facebooklogo from "../../assets/facebook.png";
 import googlelogo from "../../assets/google.png";
 import linkedinlogo from "../../assets/linkedin.png";
 import Image from "next/image";
-import { CircularProgress, Spinner } from "@nextui-org/react";
+import { BarLoader, BeatLoader, CircleLoader, ClockLoader, MoonLoader, PuffLoader, RingLoader, RotateLoader } from "react-spinners";
 import { UserModel } from "../api/auth/[...nextauth]";
 import { signIn } from "next-auth/react";
-
 interface Formdata {
   email: string;
   password: string;
@@ -19,7 +18,6 @@ interface Formdata {
 
 export const LogInPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
-  const { updateUser } = useUserContext();
   const router = useRouter();
   const axiosInstance = createAxiosInstance(router);
   const [formdata, setFormdata] = useState<Formdata>({
@@ -72,16 +70,16 @@ export const LogInPage: React.FC = () => {
     }
   };
 
-  const handleLoginSuccess = async(user: UserModel, token: string) => {
+  const handleLoginSuccess = async (user: UserModel, token: string) => {
     console.log(`Log In Success`);
 
     await signIn("credentials", {
-        redirect: true,
-        callbackUrl: "/dashboard/admin-dashboard",
-        ...user,
-        jwt: token,
-      });
-    router.push("/dashboard/admin-dashboard");
+      redirect: false,
+      callbackUrl: "/dashboard/admin-dashboard",
+      ...user,
+      jwt: token,
+    });
+    router.replace("/dashboard/admin-dashboard");
   };
 
   const handleLoginError = (error: { message: string }) => {
@@ -141,7 +139,7 @@ export const LogInPage: React.FC = () => {
         ) : null}
         <h1>Sign In to Foodie</h1>
         <div className="socialIcons">
-        <Image src={facebooklogo} alt="fb" height={35} width={35} />
+          <Image src={facebooklogo} alt="fb" height={35} width={35} />
           <Image src={googlelogo} alt="google" height={35} width={35} />
           <Image src={linkedinlogo} alt="linkedin" height={35} width={35} />
         </div>
@@ -172,9 +170,10 @@ export const LogInPage: React.FC = () => {
             validationMessage={validationMessages.password}
           />
           <p className="forgotpasswordtext">Forgot your password?</p>
+
           {isLoading ? (
-            // <div className="loading-spinner">Loading.......</div>
-            <CircularProgress strokeWidth={110}/>
+            <div className="signin-container"><RingLoader size={20}/></div>
+            
           ) : (
             <button type="submit" className="signin-container">
               Sign In
@@ -185,9 +184,13 @@ export const LogInPage: React.FC = () => {
       <div className="left">
         <h1>Welcome Back!</h1>
         <h3>Don't have an account?</h3>
-        <div className="signup-container" onClick={() => router.push("/signup")}>
+        <div
+          className="signup-container"
+          onClick={() => router.push("/signup")}
+        >
           Sign Up
         </div>
+        div
       </div>
     </div>
   );

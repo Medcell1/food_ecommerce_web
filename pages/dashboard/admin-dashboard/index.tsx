@@ -1,8 +1,6 @@
 // pages/admin-dashboard/index.tsx
 import Sidebar from '@/components/sidebar';
-import { useUserContext } from '@/context/usercontext';
-import { CircularProgress } from '@nextui-org/react';
-import { SessionProvider, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const DashboardPage = () => {
 

@@ -11,6 +11,7 @@ import ImageC from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
 import { UserModel} from "../api/auth/[...nextauth]";
 import imageToBase64 from 'image-to-base64';
+import { RingLoader } from 'react-spinners';
 
 
 
@@ -51,30 +52,58 @@ export const SignupPage: React.FC = () => {
   });
 
   const [loading, setLoading] = useState(false);
+// Add this function to your SignupPage component
+const handleImageDecode = (file: File) => {
+  const reader = new FileReader();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  reader.onloadend = () => {
+    const base64String = reader.result as string;
     setFormdata({
       ...formdata,
-      [e.target.name]: e.target.value,
+      image: base64String,
+    });
+  };
+
+  reader.readAsDataURL(file);
+};
+
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value, type } = e.target;
+
+  // If the input is a file type, handle it separately
+  if (type === 'file') {
+    const fileInput = e.target as HTMLInputElement;
+    const selectedFile = fileInput.files?.[0];
+
+    if (selectedFile) {
+      handleImageDecode(selectedFile);
+    }
+  } else {
+    // For other input types, update formdata as usual
+    setFormdata({
+      ...formdata,
+      [name]: value,
     });
 
     // Clear validation message when the user starts typing
     setValidationMessages({
       ...validationMessages,
-      [e.target.name]: '',
+      [name]: '',
     });
 
     // Trigger corresponding validation function based on the field
-    if (e.target.name === 'email') {
-      validateEmail(e.target.value);
-    } else if (e.target.name === 'phoneNumber') {
-      validatePhoneNumber(e.target.value);
-    } else if (e.target.name === 'password') {
-      validatePassword(e.target.value);
-    } else if (e.target.name === 'image') {
-      validateImage(e.target.value);
+    if (name === 'email') {
+      validateEmail(value);
+    } else if (name === 'phoneNumber') {
+      validatePhoneNumber(value);
+    } else if (name === 'password') {
+      validatePassword(value);
+    } else if (name === 'image') {
+      validateImage(value);
     }
-  };
+  }
+};
+
 
   const validateEmail = (email: string) => {
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
@@ -147,17 +176,7 @@ export const SignupPage: React.FC = () => {
     console.log(`Sign Up error: ${error.message}`);
     setError(error.message);
   };
-
-  const handleImageDecode = (imagePath: string) => {
-   imageToBase64(imagePath).then((base64String) => {
-    setFormdata(
-      {
-        ...formdata,
-        image: base64String,
-      }
-    )
-   }).catch((error) => console.error(error));
-  }
+ 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -273,13 +292,13 @@ export const SignupPage: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleInputChange(e);
               validateImage(e.target.value);
-              handleImageDecode(e.target.value);
             }}
             validationMessage={validationMessages.image}
           />
           {/* Conditional rendering of the loading spinner */}
           {loading ? (
-            <div className='loading-spinner'>Loading...</div>
+                       <div className="signup-container"><RingLoader size={20}/></div>
+
           ) : (
             <button type='submit' className='signup-container'>
               Sign Up

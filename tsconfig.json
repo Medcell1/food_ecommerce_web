@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "axiosConfig.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "axiosConfig.js", "constants/useSafepush.js"],
   "exclude": ["node_modules"]
 }

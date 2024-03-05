@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 60 * 60,
   },
   callbacks: {
     async jwt({ token, account, profile, user }) {
@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
 
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token, }) {
       session = { ...session, user: token.user as UserModel & UserN };
       return { ...session }; 
     },
@@ -57,6 +57,7 @@ export const authOptions: NextAuthOptions = {
     error: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
+
 };
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);

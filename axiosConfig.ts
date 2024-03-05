@@ -44,17 +44,25 @@ const createAxiosInstance = (router: NextRouter): AxiosInstance => {
   
         // Handle specific status codes or error conditions if needed
         if (error.response.status === 401) {
-          
+          console.log('commmon!!');
           // Handle unauthorized access
         } else if (error.response.status === 404) {
+          console.log('commmon!!');
+
           // Handle not found error
         } else {
+          console.log('commmon!!');
+
           // Handle other status codes or generic errors
         }
       } else if (error.request) {
+        console.log('commmon!!');
+
         // The request was made but no response was received
         console.error("Request error:", error.request);
       } else {
+        console.log('commmon!!');
+
         // Something happened in setting up the request that triggered an Error
         console.error("Error message:", error.message);
       }
