@@ -28,11 +28,11 @@
   .signUpRightContainer h3{
     color: white;
   }
-  .signup-container{
+.signup-container{
     font-weight: bold;
     background-color: #BDBE3E;
-    width: 9vw;
-    height: 35px;
+    width: 10vw;
+    height: 45px;
     display: flex;
     justify-content: center;
     align-items: center;

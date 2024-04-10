@@ -1,43 +1,51 @@
-.container{
-  display:flex;
+.container {
+  display: flex;
 }
 
-.sidebar{
-  background: #000;
+.sidebar {
+  background: #DD2F6E;
   color: #fff;
   height: 100vh;
-  width: 200px;
+  width: 100px;
   transition: all 0.5s;
 }
-.top_section{
+
+.top_section {
   display: flex;
-  align-items:center;
-  padding:20px 15px;
+  align-items: center;
+  padding: 20px 15px;
 }
-.logo{
-  font-size: 30px;
-}
-.bars{
-  display: flex;
-  font-size: 25px;
-  margin-left: 50px;
-}
-.link{
+
+.link {
   display: flex;
   color: #fff;
-  padding: 10px 15px;
+  padding: 15px 15px;
   gap: 15px;
   transition: all 0.5s;
+  position: relative; /* Make the link container a positioning context */
 }
-.link:hover{
-  background:lightskyblue;
+
+.link:hover .tooltip {
+  opacity: 1; /* Show tooltip on hover */
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  z-index: 999;
+  width: fit-content; /* Adjust the width as needed */
+  text-align: center;
+  top: 50%;
+  left: calc(100% + 20px); /* Adjust the spacing */
+  transform: translateY(-50%);
+  transition: opacity 0.3s;
+}
+
+.active {
+  background: white;
   color: #000;
-  transition: all 0.5s;
-}
-.active{
-  background: lightskyblue;
-  color: #000;
-}
-.icon, .link_text{
-  font-size: 20px;
+  border-radius: 10px;
 }

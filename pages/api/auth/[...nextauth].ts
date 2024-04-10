@@ -24,18 +24,25 @@ export const authOptions: NextAuthOptions = {
           email: req?.body?.email,
           jwt: req?.body?.jwt,
         };
+      
 
         if (userData) {
           return { ...userData };
         } else {
           return null;
         }
+      
       },
-    }),
+    },
+    ),
+  
   ],
+
   session: {
-    maxAge: 60 * 60,
+    maxAge: 5000,
+
   },
+  
   callbacks: {
     async jwt({ token, account, profile, user }) {
       const newAccount: any = user;
@@ -54,7 +61,8 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
-    error: "/login",
+    signOut: "/login",
+    newUser: "/signup"
   },
   secret: process.env.NEXTAUTH_SECRET,
 

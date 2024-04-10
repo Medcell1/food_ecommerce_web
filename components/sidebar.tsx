@@ -1,23 +1,15 @@
-import React, { useState, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import {
-  ChatText,
-  ForkKnife,
   House,
-  List,
   Person,
-  SignOut,
+  ForkKnife,
+  ChatText,
   Timer,
+  SignOut,
 } from "phosphor-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Cookies from "js-cookie";
-import createAxiosInstance from "../axiosConfig";
-import styles from "../styles/sidebar.module.css";
 import { signOut } from "next-auth/react";
-
-interface SidebarProps {
-  children?: ReactNode;
-}
 
 interface MenuItem {
   path: string;
@@ -26,91 +18,76 @@ interface MenuItem {
   onClick?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children }) => {
+const Sidebar: React.FC<{ children?: ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const axiosInstance = createAxiosInstance(router);
-  const [isOpen, setIsOpen] = useState(true);
 
   const handleLogout = async () => {
     try {
-        // Sign out the user
-        await signOut();
-        // Redirect to the login page or any other page
-        router.push('/login');
+      await signOut({ redirect: true, callbackUrl: "/" });
     } catch (error) {
       console.error(error);
-      // Handle any errors or show a message to the user
     }
   };
 
-  const toggle = () => setIsOpen(!isOpen);
-
   const menuItem: MenuItem[] = [
     {
-      path: "/admin-dashboard",
+      path: "/dashboard",
       name: "Dashboard",
-      icon: <House />,
+      icon: <House size={30} />,
     },
     {
-      path: "/profile",
-      name: "Profile",
-      icon: <Person />,
-    },
-    {
-      path: "/menus",
+      path: "/dashboard/menus",
       name: "Menus",
-      icon: <ForkKnife />,
+      icon: <ForkKnife size={30} />,
     },
     {
-      path: "/contact-us",
-      name: "Contact Us",
-      icon: <ChatText />,
-    },
-    {
-      path: "/working-hours",
+      path: "/dashboard/working-hours",
       name: "Working Hours",
-      icon: <Timer />,
+      icon: <Timer size={30} />,
+    },
+    {
+      path: "/dashboard/contact-us",
+      name: "Contact Us",
+      icon: <ChatText size={30} />,
+    },
+
+    {
+      path: "/dashboard/profile",
+      name: "Profile",
+      icon: <Person size={30} />,
     },
     {
       path: "",
       name: "LogOut",
-      icon: <SignOut />,
+      icon: <SignOut size={30} />,
       onClick: handleLogout,
     },
   ];
 
   return (
-    <div className="container">
-      <div style={{ width: isOpen ? "200px" : "50px" }} className="sidebar">
-        <div className="top_section">
-          <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
-            Logo
-          </h1>
-          <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">
-            <List onClick={toggle} />
-          </div>
-        </div>
+    <>
+      <div
+        className={`hidden md:flex sidebar  text-white flex-col items-center fixed top-0 left-0 h-full z-50 transition-all`}
+      >
+        <div className="top_section py-4"></div>
         {menuItem.map((item, index) => (
           <Link href={item.path} key={index}>
             <div
               onClick={item.onClick}
-              className={`link ${
+              className={`link py-4 relative ${
                 router.pathname === item.path ? "active" : ""
               }`}
             >
               <div className="icon">{item.icon}</div>
-              <div
-                style={{ display: isOpen ? "block" : "none" }}
-                className="link_text"
-              >
-                {item.name}
-              </div>
+              <span className="tooltip opacity-0">{item.name}</span>
             </div>
           </Link>
         ))}
       </div>
-      <main>{children}</main>
-    </div>
+
+      {/* Main content */}
+      <main className={`md:ml-16 flex-1 transition-all`}>{children}</main>
+    </>
   );
 };
 
