@@ -14,8 +14,7 @@
   
   .left {
     flex: 1;
-    background-image: url('../../assets/signbackground.png');
-    background-size: cover;
+    background-color: #DD2F6E;
     background-position: center;
     display: flex;
     align-items: center;
@@ -24,7 +23,7 @@
   }
   
   .right h1 {
-    color: #c1c242;
+    color: black;
     margin-left: 40px;
   }
   

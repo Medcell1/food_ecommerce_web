@@ -15,5 +15,15 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  variants: {
+    extend: {
+      display: ["focus:group"],
+      gradientColorStops: theme => ({
+        ...theme('colors'),
+        'pink-bottom': '#DD2F6E', // Pink color for the bottom gradient
+        // You can add more gradient colors here if needed
+      }),
+    }
+  }
 }
 

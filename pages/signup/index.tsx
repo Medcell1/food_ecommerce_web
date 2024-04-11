@@ -11,7 +11,7 @@ import ImageC from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
 import { UserModel} from "../api/auth/[...nextauth]";
 import imageToBase64 from 'image-to-base64';
-import { RingLoader } from 'react-spinners';
+import { CircleLoader, RingLoader } from 'react-spinners';
 
 
 
@@ -165,11 +165,11 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   
     await signIn("credentials", {
       redirect: true,
-      callbackUrl: "/dashboard/admin-dashboard",
+      callbackUrl: "/dashboard",
       ...user,
       jwt: token,
     });
-  router.push("/dashboard/admin-dashboard");
+  router.push("/dashboard");
   };
 
   const handleSignUpError = (error: { message: string }) => {
@@ -294,10 +294,12 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               validateImage(e.target.value);
             }}
             validationMessage={validationMessages.image}
+             // Add accept attribute to only allow image files
+
           />
           {/* Conditional rendering of the loading spinner */}
           {loading ? (
-                       <div className="signup-container"><RingLoader size={20}/></div>
+                       <button className='signup-container'><CircleLoader size={20}/></button>
 
           ) : (
             <button type='submit' className='signup-container'>

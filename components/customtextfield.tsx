@@ -30,6 +30,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           type={type}
           name={name}
           onChange={onChange}
+          accept="image/*"
         />
       ) : (
         <input

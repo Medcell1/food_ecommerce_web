@@ -8,7 +8,7 @@ import facebooklogo from "../../assets/facebook.png";
 import googlelogo from "../../assets/google.png";
 import linkedinlogo from "../../assets/linkedin.png";
 import Image from "next/image";
-import { BarLoader, BeatLoader, CircleLoader, ClockLoader, MoonLoader, PuffLoader, RingLoader, RotateLoader } from "react-spinners";
+import {  RingLoader,  } from "react-spinners";
 import { UserModel } from "../api/auth/[...nextauth]";
 import { signIn } from "next-auth/react";
 interface Formdata {
@@ -75,11 +75,12 @@ export const LogInPage: React.FC = () => {
 
     await signIn("credentials", {
       redirect: false,
-      callbackUrl: "/dashboard/admin-dashboard",
+      callbackUrl: "/dashboard",
       ...user,
       jwt: token,
     });
-    router.replace("/dashboard/admin-dashboard");
+    router.replace("/dashboard");
+    
   };
 
   const handleLoginError = (error: { message: string }) => {
@@ -186,7 +187,7 @@ export const LogInPage: React.FC = () => {
         <h3>Don't have an account?</h3>
         <div
           className="signup-container"
-          onClick={() => router.push("/signup")}
+        onClick={() => router.push("/signup")}
         >
           Sign Up
         </div>
