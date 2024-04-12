@@ -5,7 +5,7 @@ import { WarningCircle } from 'phosphor-react';
 
 interface CustomTextFieldProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  value: string;
+  value?: string;
   type?: string;
   name: string;
   icon?: ReactElement;

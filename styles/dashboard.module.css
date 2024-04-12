@@ -1,0 +1,13 @@
+/* CSS for screens 1280px and above */
+@media screen and (min-width: 1280px) {
+    .flex-col.md\\:flex-row {
+      flex-direction: row;
+    }
+    .flex-col.md\\:flex-row > * {
+      margin-right: 20px;
+    }
+    .flex-col.md\\:flex-row > *:last-child {
+      margin-right: 0;
+    }
+  }
+  
