@@ -6,6 +6,7 @@ import '@/pages/signup/index.css';
 import '@/pages/login/index.css';
 import '@/components/sidebar.css';
 import '@/components/navbar.css';
+import "@/pages/dashboard/index.css"
 
 
 

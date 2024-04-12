@@ -15,7 +15,7 @@ export const TopNavbar: React.FC<Props> = ({ image, userName }) => {
   };
 
   return (
-    <nav className="bg-white px-6 sm:px-10 md:px-20 py-6 sm:py-8 lg:py-10 flex justify-between ml-4 md:ml-12 lg:ml-20 shadow-lg">
+    <nav className="bg-white px-6 sm:px-10 md:px-20 py-6 sm:py-8 lg:py-10 flex justify-between ml-1 md:ml-12 lg:ml-20 shadow-lg">
       <div className="flex items-center text-lg md:text-xl lg:text-2xl">
         <List className="text-black me-4 cursor-pointer" onClick={toggleDropdown} />
         <span className="text-black font-semibold">Dashboard</span>

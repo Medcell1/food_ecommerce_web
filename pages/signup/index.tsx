@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import facebooklogo from '../../assets/facebook.png';
 import googlelogo from '../../assets/google.png';
 import linkedinlogo from '../../assets/linkedin.png';
@@ -8,19 +7,23 @@ import { EnvelopeSimple, Image, Lock, Phone, User, WarningCircle } from 'phospho
 import createAxiosInstance from '../../axiosConfig';
 import { useRouter } from 'next/router';
 import ImageC from 'next/image';
-import { signIn, useSession } from 'next-auth/react';
-import { UserModel} from "../api/auth/[...nextauth]";
-import imageToBase64 from 'image-to-base64';
-import { CircleLoader, RingLoader } from 'react-spinners';
+import { signIn } from 'next-auth/react';
+import { UserModel } from "../api/auth/[...nextauth]";
+import { CircleLoader } from 'react-spinners';
 
-
-
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  image: string;
+}
 interface FormData {
   name: string;
   email: string;
   password: string;
   phoneNumber: string;
-  image: string;
+  image: File | null | undefined; // Change to accept File or null
 }
 
 interface ValidationMessages {
@@ -35,12 +38,13 @@ export const SignupPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const axiosInstance = createAxiosInstance(router);
+
   const [formdata, setFormdata] = useState<FormData>({
     name: '',
     email: '',
     password: '',
     phoneNumber: '',
-    image: '',
+    image: null, // Initialize image as null
   });
 
   const [validationMessages, setValidationMessages] = useState<ValidationMessages>({
@@ -52,58 +56,56 @@ export const SignupPage: React.FC = () => {
   });
 
   const [loading, setLoading] = useState(false);
-// Add this function to your SignupPage component
-const handleImageDecode = (file: File) => {
-  const reader = new FileReader();
 
-  reader.onloadend = () => {
-    const base64String = reader.result as string;
-    setFormdata({
-      ...formdata,
-      image: base64String,
-    });
-  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type } = e.target;
 
-  reader.readAsDataURL(file);
-};
+    if (type === 'file') {
+      const fileInput = e.target as HTMLInputElement;
+      const selectedFile = fileInput.files?.[0]; // Get the selected file
+  
+      setFormdata({
+        ...formdata,
+        [name]: selectedFile, // Update formdata with the selected file
+      });
+  
+      // Clear validation message when the user selects a file
+      setValidationMessages({
+        ...validationMessages,
+        [name]: '', // Clear the validation message for the file input
+      });
+    } else {
+      const value = e.target.value;
+      setFormdata({
+        ...formdata,
+        [name]: value,
+      });
 
-const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value, type } = e.target;
-
-  // If the input is a file type, handle it separately
-  if (type === 'file') {
-    const fileInput = e.target as HTMLInputElement;
-    const selectedFile = fileInput.files?.[0];
-
-    if (selectedFile) {
-      handleImageDecode(selectedFile);
+      // Trigger corresponding validation function based on the field
+      if (name === 'email') {
+        validateEmail(value);
+      } else if (name === 'phoneNumber') {
+        validatePhoneNumber(value);
+      } else if (name === 'password') {
+        validatePassword(value);
+      }
     }
-  } else {
-    // For other input types, update formdata as usual
+  };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileInput = e.target as HTMLInputElement;
+    const selectedFile = fileInput.files?.[0]; // Get the selected file
+
     setFormdata({
       ...formdata,
-      [name]: value,
+      image: selectedFile, // Update formdata with the selected file
     });
 
-    // Clear validation message when the user starts typing
+    // Clear validation message when the user selects a file
     setValidationMessages({
       ...validationMessages,
-      [name]: '',
+      image: '',
     });
-
-    // Trigger corresponding validation function based on the field
-    if (name === 'email') {
-      validateEmail(value);
-    } else if (name === 'phoneNumber') {
-      validatePhoneNumber(value);
-    } else if (name === 'password') {
-      validatePassword(value);
-    } else if (name === 'image') {
-      validateImage(value);
-    }
-  }
-};
-
+  };
 
   const validateEmail = (email: string) => {
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
@@ -147,7 +149,7 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     }
   };
 
-  const validateImage = (image: string) => {
+  const validateImage = (image: File | null) => {
     if (!image) {
       setValidationMessages({
         ...validationMessages,
@@ -161,22 +163,21 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     }
   };
 
-  const handleSignUpSuccess =  async( user: UserModel, token: String) => {
-  
+  const handleSignUpSuccess = async (user: UserModel, token: string) => {
     await signIn("credentials", {
       redirect: true,
       callbackUrl: "/dashboard",
       ...user,
       jwt: token,
     });
-  router.push("/dashboard");
+    router.push("/dashboard");
   };
 
   const handleSignUpError = (error: { message: string }) => {
     console.log(`Sign Up error: ${error.message}`);
     setError(error.message);
   };
- 
+
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -185,7 +186,7 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     validateEmail(formdata.email);
     validatePhoneNumber(formdata.phoneNumber);
     validatePassword(formdata.password);
-    validateImage(formdata.image);
+    validateImage(formdata.image!);
 
     // Check if any validation message exists
     if (Object.values(validationMessages).some((message) => message !== '')) {
@@ -195,10 +196,19 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     }
 
     try {
-      const response = await axiosInstance.post('/auth/signup', formdata);
+      const formData = new FormData();
+      formData.append('name', formdata.name);
+      formData.append('email', formdata.email);
+      formData.append('password', formdata.password);
+      formData.append('phoneNumber', formdata.phoneNumber);
+      if (formdata.image) {
+        formData.append('file', formdata.image); // Append the image file to the form data
+      }
+
+      const response = await axiosInstance.post('/auth/signup', formData);
 
       if (response.status === 201) {
-        const { user, token} = response.data;
+        const { user, token } = response.data;
         handleSignUpSuccess(user, token);
       }
     } catch (error: any) {
@@ -265,7 +275,7 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             type='password'
             name='password'
             value={formdata.password}
-            onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleInputChange(e);
               validatePassword(e.target.value);
             }}
@@ -288,19 +298,14 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             icon={<Image />}
             placeholder='Image URL'
             name='image'
-            value={formdata.image}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              handleInputChange(e);
-              validateImage(e.target.value);
-            }}
-            validationMessage={validationMessages.image}
-             // Add accept attribute to only allow image files
-
+            // value={formdata.image} // No need to set value for file input
+            onChange={handleFileChange}
+            validationMessage={validationMessages.image}            // Add accept attribute to only allow image files
+            
           />
           {/* Conditional rendering of the loading spinner */}
           {loading ? (
-                       <button className='signup-container'><CircleLoader size={20}/></button>
-
+            <button className='signup-container'><CircleLoader size={20} /></button>
           ) : (
             <button type='submit' className='signup-container'>
               Sign Up
@@ -311,13 +316,10 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       <div className='signUpRightContainer'>
         <h1>Start New Journey</h1>
         <h3>Already have an account?</h3>
-    
-          <div onClick={() => router.push('/login')}className='navigate-signup-container'>Sign In</div>
-     
+        <div onClick={() => router.push('/login')} className='navigate-signup-container'>Sign In</div>
       </div>
     </div>
   );
 };
+
 export default SignupPage;
-
-

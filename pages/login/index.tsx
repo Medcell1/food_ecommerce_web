@@ -107,6 +107,7 @@ export const LogInPage: React.FC = () => {
       if (response.status === 200) {
         const { user, token } = response.data;
         handleLoginSuccess(user, token);
+        console.log(token);
       }
     } catch (error: any) {
       if (error.response) {
