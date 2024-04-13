@@ -75,12 +75,12 @@ const MenuList = () => {
             }}
             className="bg-[#DD2F6E] hover:bg-white hover:text-black text-white font-bold py-2 px-4 rounded-lg lg:px-6 lg:py-3 cursor-pointer text-sm md:text-base lg:text-lg"
           >
-            ➕ Add Menu
+            ➕ Add Menus
           </button>
         }
       />
       <Sidebar>
-        <div>
+        <div>``
           <SearchBar
             onChange={(e) => {
               setSearchText(e.target.value);
