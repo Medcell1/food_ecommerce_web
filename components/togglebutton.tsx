@@ -11,7 +11,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ value, onChange }) => {
     <Switch
       checked={value}
       onChange={onChange}
-      onColor="#36D7B7"
+      onColor="#DD2F6E"
       onHandleColor="#ffffff"
       handleDiameter={20}
       uncheckedIcon={false}

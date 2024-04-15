@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 export const MenuForm = () => {
-    const [isModalOpen , setIsModalOpen] = useState(false);
   const router = useRouter();
   return (
     <div className="w-[100vw] h-[100vh] bg-gray-100 flex ">

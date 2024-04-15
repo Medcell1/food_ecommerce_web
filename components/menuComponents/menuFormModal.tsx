@@ -1,11 +1,12 @@
 import { User } from "@/pages/signup";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropdownComponent from "../dropdowncomponent";
 import { useRouter } from "next/router";
 import createAxiosInstance from "@/axiosConfig";
 import { Toast } from "@/constants/toastConfig";
 import { ClipLoader } from "react-spinners";
 import Swal from "sweetalert2";
+import { useMenuContext } from "@/context/menucontext";
 
 export interface Menu {
   _id: string;
@@ -22,12 +23,47 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   onClose,
 }) => {
   const router = useRouter();
+  const {action} = router.query;
   const axiosInstance = createAxiosInstance(router);
   const [isLoading, setisLoading] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [measure, setMeasure] = useState("Plate");
+  const [measure, setMeasure] = useState("");
+  const { isModify, selectedMenu , setIsModify, updateMenu} = useMenuContext();
+  const [isChanged, setIsChanged] = useState(false);
+  useEffect(() => {
+    if(action ===  "new") {
+      setName("");
+      setPrice("");
+      setMeasure("");
+      setImageFile(null);
+      setIsModify(false);
+      updateMenu(null);
+    }
+  }, [action]);
+  useEffect(() => {
+    if (isModify) {
+      setName(selectedMenu?.name!);
+      setMeasure(selectedMenu?.measure!);
+      setPrice(String(selectedMenu?.price ?? "")); // Convert to string
+    }
+  }, [isModify]);
+  const wasChanged = () => {
+    if(name !== selectedMenu?.name || price !== selectedMenu?.price || measure !== selectedMenu?.measure || imageFile !== null) {
+      setIsChanged(true);
+    } else {
+      setIsChanged(false);
+    }
+  }
+  useEffect(()=>{
+    wasChanged();
+  }, [name, price, imageFile, measure]);
+  useEffect(() => {
+    if (!isOpen) {
+      setIsModify(false); // Reset isModify when the modal closes
+    }
+  }, [isOpen, setIsModify]);
   const Measures = [
     "Scoop",
     "Plate",
@@ -42,15 +78,13 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
     "Ounce",
     "Pound",
   ];
-  const MAX_FILE_SIZE_MB = 1; // Maximum file size in megabytes
+  const MAX_FILE_SIZE_MB = 1;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Handle form submission here
     try {
       setisLoading(true);
-      if (imageFile && imageFile.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      if (!isModify && (!imageFile || imageFile.size > MAX_FILE_SIZE_MB * 1024 * 1024)) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -62,8 +96,15 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       formData.append("name", name);
       formData.append("price", price);
       formData.append("measure", measure);
-      formData.append("file", imageFile!);
-      if(name.trim() === "" || price.trim() === "" || (imageFile === null) || measure.trim() === "") {
+      if (imageFile) {
+        formData.append("file", imageFile!);
+      }
+      if (
+        name.trim() === "" ||
+        price.trim() === "" ||
+        (!isModify && !imageFile) ||
+        measure.trim() === ""
+      ) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -71,19 +112,32 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
         });
         return;
       }
-
-      const response = await axiosInstance.post("/menu", formData);
+      let response;
+      if (!isModify) {
+        response = await axiosInstance.post("/menu", formData);
+      } else {
+        if (!isChanged) {
+          Toast.fire({
+            icon: "error",
+            title: "No Field was Changed",
+          });
+          return;
+        }
+        response = await axiosInstance.put(`/menu/${selectedMenu?._id}`, formData);
+      }
       onClose();
       Toast.fire({
         icon: "success",
-        title: "Menu Added Successfully"
-      })
+        title: `Menu ${isModify ? "Edited" : "Added"} Successfully`,
+      });
+      
     } catch (error) {
       console.log(`Menu create error==>${error}`);
-    } finally{
+    } finally {
       setisLoading(false);
     }
   };
+  
 
   if (!isOpen) {
     return null;
@@ -132,7 +186,7 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
                 input={{
                   id: "measure",
                   label: "Measure",
-                  placeholder: Measures[1],
+                  placeholder: "Select",
                   type: "select",
                 }}
                 value={measure}
@@ -155,18 +209,24 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
               type="file"
               id="image"
               name="image"
+             
               onChange={(e) =>
                 setImageFile(e.target.files ? e.target.files[0] : null)
               }
               className="mt-1 p-2 block w-full border-gray-300 rounded-md"
             />
+            <small className="text-gray-500">
+              {isModify
+                ? "Leave empty to keep the current image"
+                : ""}
+            </small>
           </div>
           <div className="flex justify-end">
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer"
             >
-              {!isLoading? `Submit` : <ClipLoader size={15}/>} 
+              {!isLoading ? `Submit` : <ClipLoader size={15} />}
             </button>
             <button
               type="button"
