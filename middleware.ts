@@ -18,14 +18,14 @@ export default withAuth(
         
 
         if (
-            (req.nextUrl.pathname === "/login" || req.nextUrl.pathname === "/") &&
+            req.nextUrl.pathname === "/login" &&
             req.nextauth.token !== null
         ) {
             return NextResponse.redirect(new URL("/dashboard", req.url));
         }
 
         if (
-            req.nextUrl.pathname === "/" &&
+            req.nextUrl.pathname === "/auth/login" &&
             req.nextauth.token === null
         ) {
             return NextResponse.redirect(new URL("/login", req.url));
@@ -34,9 +34,8 @@ export default withAuth(
     {
         secret: process.env.NEXTAUTH_SECRET,
         pages: {
-            signIn: "/signup",
-            error: "/login",
-            newUser: "/signup"
+            signIn: "/login",
+            error: "/signup",
         },
         callbacks: {
             authorized: ({ token }) => !!token,

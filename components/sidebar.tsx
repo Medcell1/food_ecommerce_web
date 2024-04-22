@@ -23,7 +23,7 @@ const Sidebar: React.FC<{ children?: ReactNode }> = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      await signOut({ redirect: true, callbackUrl: "/" });
+      await signOut();
     } catch (error) {
       console.error(error);
     }
