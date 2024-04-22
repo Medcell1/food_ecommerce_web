@@ -47,7 +47,7 @@ const createAxiosInstance = (router: NextRouter): AxiosInstance => {
 
         // Handle specific status codes or error conditions if needed
         if (error.response.status === 401) {
-          alert('Please Refresh and Log In again');
+          alert('Token Expired, Please Log In again');
           signOut();
 
           console.log("commmon!!");

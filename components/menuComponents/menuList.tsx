@@ -12,6 +12,7 @@ import { Toast } from "@/constants/toastConfig";
 import { useMenuContext } from "@/context/menucontext";
 import { getSession } from "next-auth/react";
 import { Session } from "next-auth";
+import { TransactionsTable } from "../table";
 
 const MenuList: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
@@ -80,10 +81,9 @@ const MenuList: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
   useEffect(() => {
     if (action === "new") {
-      updateMenu(null);
       setIsModify(false);
     }
-  }, [action, updateMenu, setIsModify]);
+  }, [action]);
   useEffect(() => {
     if (action === "edit") {
       setIsModify(true);
@@ -143,7 +143,6 @@ const MenuList: React.FC<{ children: ReactNode }> = ({ children }) => {
               ))}
             </div>
           )}
-          
         </div>
         <main>{children}</main>
       </Sidebar>

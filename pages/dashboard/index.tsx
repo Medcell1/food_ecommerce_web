@@ -37,7 +37,7 @@ const DashboardPage = () => {
     getUserDetails();
   }, []);
   return (
-      <div className="w-[100vw] bg-gray-100">
+      <div className="w-[100vw] h-screen bg-gray-100">
         <TopNavbar image={userDetails?.image!} userName={userDetails?.name!} />
         <Sidebar>
           {!isLoading ? (

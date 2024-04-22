@@ -32,6 +32,8 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   const [measure, setMeasure] = useState("");
   const { isModify, selectedMenu , setIsModify, updateMenu} = useMenuContext();
   const [isChanged, setIsChanged] = useState(false);
+  console.log(isChanged);
+  
   useEffect(() => {
     if(action ===  "new") {
       setName("");
@@ -40,13 +42,14 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       setImageFile(null);
       setIsModify(false);
       updateMenu(null);
-    }
+      setIsChanged(false);
+       }
   }, [action]);
   useEffect(() => {
     if (isModify) {
       setName(selectedMenu?.name!);
       setMeasure(selectedMenu?.measure!);
-      setPrice(String(selectedMenu?.price ?? "")); // Convert to string
+      setPrice(selectedMenu?.price!); // Convert to string
     }
   }, [isModify]);
   const wasChanged = () => {
@@ -61,6 +64,10 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   }, [name, price, imageFile, measure]);
   useEffect(() => {
     if (!isOpen) {
+      setName("");
+      setPrice("");
+      setMeasure("");
+      setImageFile(null);
       setIsModify(false); // Reset isModify when the modal closes
     }
   }, [isOpen, setIsModify]);
@@ -79,12 +86,11 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
     "Pound",
   ];
   const MAX_FILE_SIZE_MB = 1;
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setisLoading(true);
-      if (!isModify && (!imageFile || imageFile.size > MAX_FILE_SIZE_MB * 1024 * 1024)) {
+      if (imageFile?.size! > MAX_FILE_SIZE_MB * 1024 * 1024) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -100,10 +106,10 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
         formData.append("file", imageFile!);
       }
       if (
-        name.trim() === "" ||
-        price.trim() === "" ||
+        !name ||
+        !price ||
         (!isModify && !imageFile) ||
-        measure.trim() === ""
+        !measure
       ) {
         Swal.fire({
           icon: "error",
@@ -112,7 +118,7 @@ const MenuFormModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
         });
         return;
       }
-      let response;
+      var response;
       if (!isModify) {
         response = await axiosInstance.post("/menu", formData);
       } else {

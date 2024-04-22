@@ -3,7 +3,7 @@ import React, { ReactElement } from "react";
 import Layout from "../layout";
 import { useRouter } from "next/router";
 import { MenuForm } from "./menuForm";
-import { MenuContextProvider } from "@/context/menucontext";
+import { MenuContextProvider, useMenuContext } from "@/context/menucontext";
 import MenuFormModal from "@/components/menuComponents/menuFormModal";
 
 const MenuPages = () => {
