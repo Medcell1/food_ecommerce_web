@@ -9,8 +9,8 @@ import googlelogo from "../../assets/google.png";
 import linkedinlogo from "../../assets/linkedin.png";
 import Image from "next/image";
 import {  RingLoader,  } from "react-spinners";
-import { UserModel } from "../api/auth/[...nextauth]";
 import { signIn } from "next-auth/react";
+import { UserModel } from "../api/auth/[...nextauth]";
 interface Formdata {
   email: string;
   password: string;
@@ -188,7 +188,9 @@ export const LogInPage: React.FC = () => {
         <h3>Don't have an account?</h3>
         <div
           className="signup-container"
-        onClick={() => router.push("/signup")}
+        onClick={() => {
+          router.push("/signup");
+        }}
         >
           Sign Up
         </div>

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import facebooklogo from '../../assets/facebook.png';
 import googlelogo from '../../assets/google.png';
 import linkedinlogo from '../../assets/linkedin.png';
-import CustomTextField from '../../components/customtextfield';
+import CustomTextField from '@/components/customtextfield';
 import { EnvelopeSimple, Image, Lock, Phone, User, WarningCircle } from 'phosphor-react';
-import createAxiosInstance from '../../axiosConfig';
 import { useRouter } from 'next/router';
 import ImageC from 'next/image';
 import { signIn } from 'next-auth/react';
-import { UserModel } from "../api/auth/[...nextauth]";
 import { CircleLoader } from 'react-spinners';
+import createAxiosInstance from '@/axiosConfig';
+import { UserModel } from '../api/auth/[...nextauth]';
 
 export interface User {
   _id: string;
