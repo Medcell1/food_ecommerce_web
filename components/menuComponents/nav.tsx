@@ -15,7 +15,7 @@ export const Nav: React.FC<Props> = ({ text, widget }) => {
   };
   const handleLogout = async () => {
     try {
-      await signOut({ redirect: true, callbackUrl: "/login" });
+      await signOut({ redirect: true, callbackUrl: "/auth/login" });
     } catch (error) {
       console.error(error);
     }
@@ -34,31 +34,31 @@ export const Nav: React.FC<Props> = ({ text, widget }) => {
             <div className="z-10 absolute bg-white rounded-lg shadow top-full right-0 mt-2">
               <ul className="py-2 text-xs sm:text-sm md:text-base lg:text-lg text-gray-950 flex flex-col items-center">
                 <li className="flex items-center px-4 py-2 hover:bg-gray-200 w-full transition duration-300">
-                  <a href="/dashboard" className="flex items-center w-full text-black">
+                  <a href="/admin/dashboard" className="flex items-center w-full text-black">
                     <List className="w-4 h-4 mr-2" />
                     Dashboard
                   </a>
                 </li>
                 <li className="flex items-center px-4 py-2 hover:bg-gray-200 w-full transition duration-300">
-                  <a href="/dashboard/profile" className="flex items-center w-full text-black">
+                  <a href="/admin/dashboard/profile" className="flex items-center w-full text-black">
                     <User className="w-4 h-4 mr-2" />
                     Profile
                   </a>
                 </li>
                 <li className="flex items-center px-4 py-2 hover:bg-gray-200 w-full transition duration-300">
-                  <a href="/dashboard/menus" className="flex items-center w-full text-black">
+                  <a href="/admin/dashboard/menus" className="flex items-center w-full text-black">
                     <ForkKnife className="w-4 h-4 mr-2" />
                     Menus
                   </a>
                 </li>
                 <li className="flex items-center px-4 py-2 hover:bg-gray-200 w-full transition duration-300">
-                  <a href="/dashboard/contact-us" className="flex items-center w-full text-black">
+                  <a href="/admin/dashboard/contact-us" className="flex items-center w-full text-black">
                     <ChatText className="w-4 h-4 mr-2" />
                     Contact Us
                   </a>
                 </li>
                 <li className="flex items-center px-4 py-2 hover:bg-gray-200 w-full transition duration-300">
-                  <a href="/dashboard/working-hours" className="flex items-center w-full text-black">
+                  <a href="/admin/dashboard/working-hours" className="flex items-center w-full text-black">
                     <Timer className="w-4 h-4 mr-2" />
                     Working Hours
                   </a>

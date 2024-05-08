@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   session: {
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 30 * 24 * 60 * 60,
 
   },
   
@@ -60,9 +60,10 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/login",
-    error: "/signup"    
+    signIn: "/auth/login",
+    error: "/auth/signup", 
   },
+
   secret: process.env.NEXTAUTH_SECRET,
 
 };

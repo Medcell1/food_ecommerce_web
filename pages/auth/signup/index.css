@@ -14,7 +14,7 @@
   
   .signUpRightContainer {
     flex: 1;
-    background-image: url('../../assets/signbackground.png');
+    background-image: url('../../../assets/signbackground.png');
     background-size: cover;
     background-position: center;
     display: flex;

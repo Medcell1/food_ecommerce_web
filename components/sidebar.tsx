@@ -9,7 +9,7 @@ import {
 } from "phosphor-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 
 interface MenuItem {
   path: string;
@@ -22,8 +22,9 @@ const Sidebar: React.FC<{ children?: ReactNode }> = ({ children }) => {
   const router = useRouter();
 
   const handleLogout = async () => {
+
     try {
-      await signOut();
+      await signOut({callbackUrl: "/auth/login"});
     } catch (error) {
       console.error(error);
     }
@@ -31,28 +32,28 @@ const Sidebar: React.FC<{ children?: ReactNode }> = ({ children }) => {
 
   const menuItem: MenuItem[] = [
     {
-      path: "/dashboard",
+      path: "/admin/dashboard",
       name: "Dashboard",
       icon: <House size={30} />,
     },
     {
-      path: "/dashboard/menus",
+      path: "/admin/dashboard/menus",
       name: "Menus",
       icon: <ForkKnife size={30} />,
     },
     {
-      path: "/dashboard/working-hours",
+      path: "/admin/dashboard/working-hours",
       name: "Working Hours",
       icon: <Timer size={30} />,
     },
     {
-      path: "/dashboard/contact-us",
+      path: "/admin/dashboard/contact-us",
       name: "Contact Us",
       icon: <ChatText size={30} />,
     },
 
     {
-      path: "/dashboard/profile",
+      path: "/admin/dashboard/profile",
       name: "Profile",
       icon: <Person size={30} />,
     },

@@ -6,10 +6,10 @@ import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { UserModel } from "../api/auth/[...nextauth]";
 import LoadingModal from "@/components/loadingmodal";
 import CustomBox from "@/components/CustomBox";
 import { UserContextProvider } from "@/context/usercontext";
+import { UserModel } from "@/pages/api/auth/[...nextauth]";
 
 const DashboardPage = () => {
   const router = useRouter();

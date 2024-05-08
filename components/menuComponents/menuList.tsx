@@ -12,7 +12,7 @@ import { Toast } from "@/constants/toastConfig";
 import { useMenuContext } from "@/context/menucontext";
 import { getSession } from "next-auth/react";
 import { Session } from "next-auth";
-import { TransactionsTable } from "../table";
+import CustomPaginationActionsTable from "../table";
 
 const MenuList: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
@@ -22,6 +22,7 @@ const MenuList: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoading, setisLoading] = useState(false);
   const { updateMenu, setIsModify, isModify } = useMenuContext();
   const [menuList, setMenuList] = useState<Menu[]>([]);
+  const [deleteErrrorMessage, setdeleteErrorMessage] = useState("");
 
   const fetchMenuList = useCallback(async () => {
     const session: any | Session = await getSession();
@@ -91,18 +92,18 @@ const MenuList: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [action]);
 
   const handleEdit = (menu: Menu) => {
-    router.push("/dashboard/menus?action=edit");
+    router.push("/admin/dashboard/menus?action=edit");
     updateMenu(menu);
   };
 
   return (
-    <div className="w-[100%] bg-gray-100">
+    <div className="bg-gray-100">
       <Nav
         text="Menu"
         widget={
           <button
             onClick={() => {
-              router.push("/dashboard/menus?action=new");
+              router.push("/admin/dashboard/menus?action=new");
             }}
             className="bg-[#DD2F6E] hover:bg-white hover:text-black text-white font-bold py-2 px-4 rounded-lg lg:px-6 lg:py-3 cursor-pointer text-sm md:text-base lg:text-lg"
           >
@@ -138,7 +139,37 @@ const MenuList: React.FC<{ children: ReactNode }> = ({ children }) => {
                   editOnClicked={() => {
                     handleEdit(menu);
                   }}
-                  deleteOnClicked={() => {}}
+                  deleteOnClicked={() => {
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Yes, delete it!",
+                    }).then(async () => {
+                      try {
+                        const response = await axiosInstance.delete(
+                          `/menu/${menu._id}`
+                        );
+                        Swal.fire({
+                          title: "Deleted!",
+                          text: "Your file has been deleted.",
+                          icon: "success",
+                        });
+                        router.reload();
+                      } catch (error: any) {
+                        const errorMessage = error.response.data.message;
+                        setdeleteErrorMessage(errorMessage);
+                        Swal.fire({
+                          title: "Delete Error",
+                          text: `${errorMessage}`,
+                          icon: "error",
+                        });
+                      }
+                    });
+                  }}
                 />
               ))}
             </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import facebooklogo from '../../assets/facebook.png';
-import googlelogo from '../../assets/google.png';
-import linkedinlogo from '../../assets/linkedin.png';
+import facebooklogo from '../../../assets/facebook.png';
+import googlelogo from '../../../assets/google.png';
+import linkedinlogo from '../../../assets/linkedin.png';
 import CustomTextField from '@/components/customtextfield';
 import { EnvelopeSimple, Image, Lock, Phone, User, WarningCircle } from 'phosphor-react';
 import { useRouter } from 'next/router';
@@ -9,7 +9,7 @@ import ImageC from 'next/image';
 import { signIn } from 'next-auth/react';
 import { CircleLoader } from 'react-spinners';
 import createAxiosInstance from '@/axiosConfig';
-import { UserModel } from '../api/auth/[...nextauth]';
+import { UserModel } from '@/pages/api/auth/[...nextauth]';
 
 export interface User {
   _id: string;
@@ -166,11 +166,11 @@ export const SignupPage: React.FC = () => {
   const handleSignUpSuccess = async (user: UserModel, token: string) => {
     await signIn("credentials", {
       redirect: true,
-      callbackUrl: "/dashboard",
+      callbackUrl: "/admin/dashboard",
       ...user,
       jwt: token,
     });
-    router.push("/dashboard");
+    router.push("/admin/dashboard");
   };
 
   const handleSignUpError = (error: { message: string }) => {
@@ -316,7 +316,7 @@ export const SignupPage: React.FC = () => {
       <div className='signUpRightContainer'>
         <h1>Start New Journey</h1>
         <h3>Already have an account?</h3>
-        <div onClick={() => router.push('/login')} className='navigate-signup-container'>Sign In</div>
+        <div onClick={() => router.push('/auth/login')} className='navigate-signup-container'>Sign In</div>
       </div>
     </div>
   );

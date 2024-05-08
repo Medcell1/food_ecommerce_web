@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import CustomTextField from "../../components/customtextfield";
+
 import { EnvelopeSimple, Lock, WarningCircle } from "phosphor-react";
-import { useUserContext } from "../../context/usercontext";
-import createAxiosInstance from "../../axiosConfig";
-import facebooklogo from "../../assets/facebook.png";
-import googlelogo from "../../assets/google.png";
-import linkedinlogo from "../../assets/linkedin.png";
+import facebooklogo from "../../../assets/facebook.png";
+import googlelogo from "../../../assets/google.png";
+import linkedinlogo from "../../../assets/linkedin.png";
 import Image from "next/image";
 import {  RingLoader,  } from "react-spinners";
 import { signIn } from "next-auth/react";
-import { UserModel } from "../api/auth/[...nextauth]";
+import { UserModel } from "@/pages/api/auth/[...nextauth]";
+import createAxiosInstance from "@/axiosConfig";
+import CustomTextField from "@/components/customtextfield";
 interface Formdata {
   email: string;
   password: string;
@@ -75,11 +75,11 @@ export const LogInPage: React.FC = () => {
 
     await signIn("credentials", {
       redirect: false,
-      callbackUrl: "/dashboard",
+      callbackUrl: "/admin/dashboard",
       ...user,
       jwt: token,
     });
-    router.replace("/dashboard");
+    router.replace("/admin/dashboard");
     
   };
 
@@ -189,12 +189,12 @@ export const LogInPage: React.FC = () => {
         <div
           className="signup-container"
         onClick={() => {
-          router.push("/signup");
+          router.push("/auth/signup");
         }}
         >
           Sign Up
         </div>
-        div
+        
       </div>
     </div>
   );

@@ -2,11 +2,11 @@
 import { AppProps } from 'next/app';
 import '@/styles/globals.css';
 import '@/components/customtextfield.css';
-import '@/pages/signup/index.css';
-import '@/pages/login/index.css';
+import '@/pages/auth/signup/index.css';
+import '@/pages/auth/login/index.css';
 import '@/components/sidebar.css';
 import '@/components/navbar.css';
-import "@/pages/dashboard/index.css"
+import "@/pages/admin/dashboard/index.css"
 
 
 

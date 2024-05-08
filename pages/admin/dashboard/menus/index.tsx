@@ -10,7 +10,7 @@ const MenuPages = () => {
   const router = useRouter();
   const {action} = router.query;
   return (
-    <div className="h-screen">
+    <div className="">
     <MenuContextProvider>
     <MenuList>
     <MenuFormModal
@@ -19,7 +19,7 @@ const MenuPages = () => {
             router.back();
           }}
         />
-        <div className="h-[20vh]"></div>
+        <div className="h-[100vh]"></div>
     </MenuList>
 
     </MenuContextProvider>
